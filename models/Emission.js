@@ -6,6 +6,7 @@ const emissionSchema = new mongoose.Schema({
     distanceKm: Number,
     emissionKg: Number,
     date: { type: Date, default: Date.now },
+    path: {type: [[Number]]},
 
     // Car-specific
     brand: String,
