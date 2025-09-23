@@ -84,7 +84,7 @@ router.post('/car/emissions', async (req, res) => {
 // Log new emission
 router.post('/log', auth, async (req, res) => {
     try {
-        const { transportMode, distanceKm, metadata } = req.body;
+        const { transportMode, distanceKm, metadata, path } = req.body;
 
         // Emission factor logic (basic fallback)
         let emissionKg = 0;
@@ -146,6 +146,7 @@ router.post('/log', auth, async (req, res) => {
             distanceKm,
             metadata,
             emissionKg,
+            path,
             date: new Date()
         });
 
