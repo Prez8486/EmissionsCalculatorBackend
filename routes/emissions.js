@@ -78,7 +78,9 @@ router.post('/car/emissions', async (req, res) => {
 // Log new emission
 router.post('/log', auth, async (req, res) => {
     try {
+     
         const {
+
             transportMode,
             distanceKm,
             emissionKg,       // <-- directly sent from frontend
@@ -88,7 +90,9 @@ router.post('/log', auth, async (req, res) => {
             extraLoad,
             fromAirport,
             toAirport,
-            metadata
+            metadata,
+            path
+            
         } = req.body;
 
         const userId = req.user.id;
@@ -106,6 +110,7 @@ router.post('/log', auth, async (req, res) => {
             fromAirport,
             toAirport,
             metadata,
+            path,
             date: new Date()
         });
 
