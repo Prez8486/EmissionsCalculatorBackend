@@ -32,7 +32,7 @@ router.post("/change-password", auth, async (req, res) => {
     }
 });
 
-router.post('/car', authMiddleware, async (req, res) => {
+router.post('/car', auth, async (req, res) => {
   try {
     const userId = req.user.id;
     const { make, model, extraLoad } = req.body;
@@ -55,7 +55,7 @@ router.post('/car', authMiddleware, async (req, res) => {
 });
 
 // Get saved car details
-router.get('/car', authMiddleware, async (req, res) => {
+router.get('/car', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) return res.status(404).json({ error: 'User not found' });
