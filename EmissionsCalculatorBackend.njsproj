@@ -36,6 +36,7 @@
     <Content Include="models\User.js" />
     <Content Include="routes\auth.js" />
     <Content Include="routes\emissions.js" />
+    <Content Include="routes\friends.js" />
     <Content Include="server.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />

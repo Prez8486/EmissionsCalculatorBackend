@@ -9,7 +9,9 @@ const userSchema = new mongoose.Schema({
         model: { type: String, default: '' },
         extraLoad: { type: String, default: 'none' },
 
-    }
+    },
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    friendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }]
 
 });
 
