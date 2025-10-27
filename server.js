@@ -7,7 +7,6 @@ const authRoutes = require("./routes/auth");
 const emissionRoutes = require("./routes/emissions");
 const tripRoutes = require("./routes/trips"); 
 const aiRoutes = require('./routes/ai');
-const friendsRoutes = require('./routes/friends');
 
 dotenv.config();
 
@@ -29,7 +28,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/emissions", emissionRoutes);
 app.use("/api/trips", tripRoutes);
 app.use('/api/ai', aiRoutes);
-app.use('/api/friends', friendsRoutes);
 
 // Basic health check route
 app.get('/', (req, res) => {
