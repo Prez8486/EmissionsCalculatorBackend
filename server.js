@@ -7,20 +7,25 @@ const authRoutes = require("./routes/auth");
 const emissionRoutes = require("./routes/emissions");
 const tripRoutes = require("./routes/trips"); 
 const aiRoutes = require('./routes/ai');
+const routeRoutes = require('./routes/green_routes');
 
 dotenv.config();
 
 const app = express();
+
 app.use(cors({
     origin: [
-        "https://emissionscalculator.duckdns.org", // your frontend domain
+        //"https://emissionscalculator.duckdns.org", // your frontend domain
         "http://localhost:5173" // keep for local dev
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
 }));
-app.use(express.json());
+
+app.options("*", cors()); // preflight support
+
+app.use(express.json({limit: '10mb'})); // to parse JSON bodies with increased limit
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB connected"))
@@ -31,6 +36,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/emissions", emissionRoutes);
 app.use("/api/trips", tripRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/routes', routeRoutes)
 
 // Basic health check route
 app.get('/', (req, res) => {
