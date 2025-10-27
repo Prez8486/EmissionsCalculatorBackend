@@ -53,3 +53,5 @@ router.get("/list", async (req, res) => {
     const user = await User.findById(req.user.id).populate("friends", "name email");
     res.json({ friends: user.friends });
 });
+
+module.exports = router;
