@@ -31,10 +31,20 @@ router.post("/change-password", auth, async (req, res) => {
         res.status(500).json({ error: "Failed to change password" });
     }
 });
+router.get("/find", auth, async (req, res) => {
+    try {
+        const email = req.query.email;
+        if (!email) return res.status(400).json({ error: "Email is required" });
 
+        const user = await User.findOne({ email }).select("name email _id");
+        if (!user) return res.status(404).json({ error: "User not found" });
 
-
-
+        res.json(user);
+    } catch (err) {
+        console.error("Error finding user:", err);
+        res.status(500).json({ error: "Server error" });
+    }
+});
 
 
 const mongoose = require("mongoose");
