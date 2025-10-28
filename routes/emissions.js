@@ -20,7 +20,6 @@ router.get('/car/makes', async (req, res) => {
             }
 );
 
-
 res.json(response.data);
 
     } catch (err) {
@@ -75,6 +74,82 @@ router.post('/car/emissions', async (req, res) => {
         res.status(500).json({ error: 'Failed to calculate vehicle emissions' });
     }
 });
+
+// 4. This is for comparison page. Gets g/km for each model
+// Get emissions data for a specific car make/model
+// Simple fallback lookup for common cars (g/km) to reduce API calls
+const EMISSIONS_LOOKUP = {
+    'Ford': {
+        'Explorer': 250,
+        'F-150': 280,
+        'Escape': 180
+    },
+    'Toyota': {
+        'Corolla': 120,
+        'Corolla Hybrid': 95,
+        'Camry': 150
+    },
+    'Tesla': {
+        'Model 3': 0,
+        'Model Y': 0
+    },
+    'Bugatti': {
+        'Chiron': 571
+    },
+    // Add more as needed
+};
+router.get('/car/:make/:model', async (req, res) => {
+    try {
+        const { make, model } = req.params;
+        
+        // Try to get from lookup table first
+        const emissions = EMISSIONS_LOOKUP[make]?.[model];
+        
+        if (emissions !== undefined) {
+            return res.json({ 
+                emissions,
+                co2_per_km: emissions,
+                source: 'lookup'
+            });
+        }
+        
+        // Otherwise try CarbonSutra API (fallback)
+        try {
+            const response = await axios.post(
+                `https://${CARBONSUTRA_HOST}/vehicle_estimate_by_model`,
+                new URLSearchParams({
+                    vehicle_make: make,
+                    vehicle_model: model,
+                    distance_value: '1000', // API is responding in KG/KM, request 1000KM to get g/km
+                    distance_unit: 'km'
+                }),
+                {
+                    headers: {
+                        'x-rapidapi-host': CARBONSUTRA_HOST,
+                        'x-rapidapi-key': CARBONSUTRA_KEY,
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                }
+            );
+
+            res.json({
+                emissions: response.data?.data?.co2e_kg || null,
+                co2_per_km: response.data?.data?.co2e_kg || null,
+                source: 'carbonsutra'
+            });
+        } catch (err) {
+            console.error("CarbonSutra Emission Calc Error:", err.response?.data || err.message);
+            res.status(500).json({ error: 'Failed to calculate vehicle emissions' });
+        }
+        
+    } catch (err) {
+        console.error("Failed to fetch car emissions:", err.response?.data || err.message);
+        res.status(404).json({ 
+            error: 'Car emissions data not found' 
+        });
+    }
+});
+
 // Log new emission
 router.post('/log', auth, async (req, res) => {
     try {
