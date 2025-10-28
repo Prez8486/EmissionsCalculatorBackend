@@ -4,7 +4,7 @@ const User = require("../models/User");
 const auth = require("../middleware/authMiddleware");  
 
 // Send a friend request
-router.post("/request/:friendId", async (req, res) => {
+router.post("/request/:friendId", auth, async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
         const friend = await User.findById(req.params.friendId);
@@ -23,7 +23,7 @@ router.post("/request/:friendId", async (req, res) => {
 });
 
 // Accept friend request
-router.post("/accept/:friendId", async (req, res) => {
+router.post("/accept/:friendId", auth, async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
         const friend = await User.findById(req.params.friendId);
@@ -49,7 +49,7 @@ router.post("/accept/:friendId", async (req, res) => {
 });
 
 // Get friend list
-router.get("/list", async (req, res) => {
+router.get("/list", auth, async (req, res) => {
     const user = await User.findById(req.user.id).populate("friends", "name email");
     res.json({ friends: user.friends });
 });
