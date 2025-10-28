@@ -76,6 +76,7 @@ router.get("/all", auth, async (req, res) => {
     }
 });
 // Cancel a sent friend request
+// Cancel a sent friend request
 router.delete("/cancel/:friendId", auth, async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
@@ -83,12 +84,22 @@ router.delete("/cancel/:friendId", auth, async (req, res) => {
 
         if (!friend) return res.status(404).json({ error: "User not found" });
 
-        // Remove the sender (user) from the recipient's friendRequests array
+        // 1?? Remove sender (user) from receiver's friendRequests array
         friend.friendRequests = friend.friendRequests.filter(
             id => id.toString() !== user._id.toString()
         );
 
+        // 2?? Optionally, remove receiver from sender's "sent requests" array
+        // (only if you’re tracking it — but safe to clean up either way)
+        if (user.sentRequests) {
+            user.sentRequests = user.sentRequests.filter(
+                id => id.toString() !== friend._id.toString()
+            );
+        }
+
+        // 3?? Save both documents
         await friend.save();
+        await user.save();
 
         res.json({ message: "Friend request cancelled successfully" });
     } catch (err) {
