@@ -75,5 +75,26 @@ router.get("/all", auth, async (req, res) => {
         res.status(500).json({ error: "Server error" });
     }
 });
+// Cancel a sent friend request
+router.delete("/cancel/:friendId", auth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        const friend = await User.findById(req.params.friendId);
+
+        if (!friend) return res.status(404).json({ error: "User not found" });
+
+        // Remove the sender (user) from the recipient's friendRequests array
+        friend.friendRequests = friend.friendRequests.filter(
+            id => id.toString() !== user._id.toString()
+        );
+
+        await friend.save();
+
+        res.json({ message: "Friend request cancelled successfully" });
+    } catch (err) {
+        console.error("Cancel request error:", err);
+        res.status(500).json({ error: err.message });
+    }
+});
 
 module.exports = router;
