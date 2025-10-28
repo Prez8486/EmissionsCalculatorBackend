@@ -1,12 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const crypto = require("crypto");
-const fetch = require("node-fetch");
+
 
 const DEV_ID = "3003702";
 const API_KEY = "e92d0392-5ea3-4538-99f9-307b44b46aec";
 const BASE_URL = "https://timetableapi.ptv.vic.gov.au";
 const auth = require("../middleware/authMiddleware");
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 function generateSignature(path) {
     // Path must start with '/' (e.g. '/v3/departures/route_type/0/stop/1071')
