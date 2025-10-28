@@ -53,5 +53,27 @@ router.get("/list", async (req, res) => {
     const user = await User.findById(req.user.id).populate("friends", "name email");
     res.json({ friends: user.friends });
 });
+router.get("/requests", auth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id)
+            .populate("friendRequests", "name email");
+
+        res.json({ pendingRequests: user.friendRequests || [] });
+    } catch (err) {
+        console.error("Get requests error:", err);
+        res.status(500).json({ error: err.message });
+    }
+});
+router.get("/all", auth, async (req, res) => {
+    try {
+        const users = await User.find({ _id: { $ne: req.user.id } })
+            .select("name email friends friendRequests");
+
+        res.json(users);
+    } catch (err) {
+        console.error("Error fetching all users:", err);
+        res.status(500).json({ error: "Server error" });
+    }
+});
 
 module.exports = router;
