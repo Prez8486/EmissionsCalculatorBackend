@@ -200,12 +200,14 @@ class GraphService:
             # Convert units:
             # Distance: meters -> kilometers
             # Time: seconds -> minutes
+            # Emissions: Fix if calculated from meters (divide by 1000)
             distance_km = distance / 1000  # Convert meters to km
             time_min = time / 60  # Convert seconds to minutes
+            emissions_kg = emissions / 1000  # Fix emissions calculated from meters
             
             total_distance += distance_km
             total_time += time_min
-            total_emissions += emissions
+            total_emissions += emissions_kg
             modes_used.add(mode)
             
             # Get coordinates
@@ -222,7 +224,7 @@ class GraphService:
                 'mode': mode,
                 'distance_km': round(distance_km, 3),
                 'time_min': round(time_min, 2),
-                'emissions_kg': round(emissions, 4)
+                'emissions_kg': round(emissions_kg, 4)
             })
         
         return {
