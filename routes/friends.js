@@ -84,24 +84,27 @@ router.delete("/cancel/:friendId", auth, async (req, res) => {
 
         if (!friend) return res.status(404).json({ error: "User not found" });
 
-        // 1?? Remove sender (user) from receiver's friendRequests array
+        // 1?? Remove sender (user) from receiver’s incoming friendRequests
         friend.friendRequests = friend.friendRequests.filter(
             id => id.toString() !== user._id.toString()
         );
 
-        // 2?? Optionally, remove receiver from sender's "sent requests" array
-        // (only if you’re tracking it — but safe to clean up either way)
+        // 2?? Remove receiver from sender’s sentRequests, if that field exists
         if (user.sentRequests) {
             user.sentRequests = user.sentRequests.filter(
                 id => id.toString() !== friend._id.toString()
             );
         }
 
-        // 3?? Save both documents
+        // 3?? Also double-check in case old data had user in friendRequests accidentally
+        user.friendRequests = user.friendRequests.filter(
+            id => id.toString() !== friend._id.toString()
+        );
+
         await friend.save();
         await user.save();
 
-        res.json({ message: "Friend request cancelled successfully" });
+        res.json({ message: "? Friend request cancelled successfully" });
     } catch (err) {
         console.error("Cancel request error:", err);
         res.status(500).json({ error: err.message });
