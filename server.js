@@ -31,7 +31,7 @@ app.use("/api/emissions", emissionRoutes);
 app.use("/api/trips", tripRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/friends', friendsRoutes);
-app.use('/api/ptv'.ptvRoutes);
+app.use('/api/ptv', ptvRoutes);
 
 
 // Basic health check route
