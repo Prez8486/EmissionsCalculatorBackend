@@ -27,7 +27,7 @@ router.get("/departures/:routeType/:stopId", async (req, res) => {
         const { routeType, stopId } = req.params;
         const path = `/v3/departures/route_type/${ routeType }/stop/${ stopId }`;
         const signature = generateSignature(path);
-        const url = `${ BASE_URL }${ path }?devid = ${ DEV_ID }& signature=${ signature }`;
+        const url = `${ BASE_URL }${ path }?devid=${ DEV_ID }&signature=${ signature }`;
         console.log(url);
         const response = await fetch(url);
         const data = await response.json();
