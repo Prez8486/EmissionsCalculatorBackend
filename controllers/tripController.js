@@ -41,7 +41,7 @@ exports.startTrip = async (req, res) => {
 
 exports.endTrip = async (req, res) => {
   try {
-    const { tripId, distanceKm, durationSeconds } = req.body;
+    const { tripId, distanceKm, durationSeconds, path } = req.body;
 
     if (!tripId) {
       return res.status(400).json({ error: 'Trip ID is required' });
@@ -78,6 +78,7 @@ exports.endTrip = async (req, res) => {
     trip.emissionKg = emissionKg;
     trip.status = 'completed';
     trip.endTime = new Date();
+    trip.path = path;
     
     await trip.save();
     
