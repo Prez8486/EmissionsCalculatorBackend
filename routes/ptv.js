@@ -15,7 +15,9 @@ function generateSignature(path) {
     const signature = crypto
         .createHmac("sha1", API_KEY)
         .update(raw)
-        .digest("hex");
+        .digest("hex")
+        .toUpperCase();
+
     return signature;
 }
 
@@ -26,7 +28,7 @@ router.get("/departures/:routeType/:stopId", async (req, res) => {
         const path = `/v3/departures/route_type/${ routeType }/stop/${ stopId }`;
         const signature = generateSignature(path);
         const url = `${ BASE_URL }${ path }?devid = ${ DEV_ID }& signature=${ signature }`;
-
+        console.log(url);
         const response = await fetch(url);
         const data = await response.json();
         res.json(data);
