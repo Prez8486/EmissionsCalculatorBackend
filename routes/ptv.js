@@ -89,7 +89,7 @@ router.get("/stops/:stopId/:routeType", async (req, res) => {
            `https://timetableapi.ptv.vic.gov.au${path}&signature=${signature}`
         );
         const data = await response.json();
-        res.json(data);
+        res.json(data.stops || []);
     } catch (err) {
         console.error("PTV stop fetch failed:", err);
         res.status(500).json({ error: "PTV API error" });
