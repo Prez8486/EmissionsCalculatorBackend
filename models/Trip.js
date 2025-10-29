@@ -9,6 +9,7 @@ const tripSchema = new mongoose.Schema({
   emissionKg: { type: Number, default: 0, min: 0},
   status: { type: String, enum: ['in-progress', 'completed', 'cancelled'], default: 'in-progress' },
   startTime: { type: Date, default: Date.now },
+  path: {type: [[Number]]},
   endTime: { type: Date }
 });
 
