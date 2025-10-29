@@ -85,20 +85,20 @@ class AIController {
        // Transform data for AI microservice (match expected format)
       const transformedData = sensorDataArray.map(sample => ({
         accelerometer: {
-          x: sample.accelerometer.x,
-          y: sample.accelerometer.y, 
-          z: sample.accelerometer.z
+        x: sample.accelerometer.x ?? 0,
+        y: sample.accelerometer.y ?? 0,
+        z: sample.accelerometer.z ?? 0
         },
         gyroscope: {
-          x: sample.gyroscope.alpha,  // Map alpha to x
-          y: sample.gyroscope.beta,   // Map beta to y
-          z: sample.gyroscope.gamma   // Map gamma to z
+            x: sample.gyroscope.x ?? sample.gyroscope.alpha ?? 0,
+            y: sample.gyroscope.y ?? sample.gyroscope.beta ?? 0,
+            z: sample.gyroscope.z ?? sample.gyroscope.gamma ?? 0
         },
         gps: {
-          speed: sample.gps.speed || 0,
-          altitude: sample.gps.altitude || 0,
-          lat: sample.gps.lat,
-          lon: sample.gps.lon
+            speed: sample.gps.speed ?? 0,
+            altitude: sample.gps.altitude ?? 0,
+            lat: sample.gps.lat ?? 0,
+            lon: sample.gps.lon ?? 0
         }
       }));
 
