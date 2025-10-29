@@ -31,7 +31,7 @@ router.get("/departures/:routeType/:stopId", async (req, res) => {
         console.log(url);
         const response = await fetch(url);
         const data = await response.json();
-        res.json(data);
+        res.json(data || []);
     } catch (err) {
         console.error("PTV fetch error:", err);
         res.status(500).json({ error: "Failed to fetch PTV data" });
@@ -55,7 +55,7 @@ router.get("/stops/search/:name", async (req, res) => {
             route_type: s.route_type
         }));
 
-        res.json(stops);
+        res.json(stops || []);
     } catch (err) {
         console.error("PTV stop search error:", err);
         res.status(500).json({ error: "Failed to search stops", message: err.message });
