@@ -56,5 +56,4 @@ jobs:
           script: |
             cd ${{ secrets.BACK_PATH }}
             npm install --production
-            pm2 restart emissions-backend || pm2 start server.js --name emissions-backend
-            pm2 save
+            pm2 restart emissions-api
