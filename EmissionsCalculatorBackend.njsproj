@@ -29,6 +29,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include=".env" />
+    <Content Include=".github\workflows\deploy-backend.yml" />
     <Content Include="controllers\authController.js" />
     <Content Include="controllers\emissionController.js" />
     <Content Include="middleware\authMiddleware.js" />
@@ -43,9 +44,11 @@
     <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include=".github\workflows\" />
     <Folder Include="controllers\" />
     <Folder Include="middleware\" />
     <Folder Include="models\" />
+    <Folder Include=".github\" />
     <Folder Include="routes\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
