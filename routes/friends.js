@@ -110,5 +110,22 @@ router.delete("/cancel/:friendId", auth, async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+// Remove a friend
+router.delete('/remove/:friendId', verifyToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const friendId = req.params.friendId;
+
+        // Remove friendId from user's list
+        await User.findByIdAndUpdate(userId, { $pull: { friends: friendId } });
+        // Remove userId from friend's list
+        await User.findByIdAndUpdate(friendId, { $pull: { friends: userId } });
+
+        res.status(200).json({ message: 'Friend removed successfully' });
+    } catch (error) {
+        console.error('Error removing friend:', error);
+        res.status(500).json({ message: 'Server error while removing friend' });
+    }
+});
 
 module.exports = router;
