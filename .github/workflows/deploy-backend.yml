@@ -20,7 +20,7 @@ jobs:
 
       - name: Install backend dependencies (CI test)
         run: |
-          cd backend
+          
           npm install
           npm run lint || echo "Lint skipped"
           npm test || echo "Tests skipped"
@@ -43,7 +43,7 @@ jobs:
           host: ${{ secrets.BACK_HOST }}
           username: ${{ secrets.BACK_USER }}
           key: ${{ secrets.BACK_SSH_KEY }}
-          source: "backend/*"
+          source: "*"
           target: "${{ secrets.BACK_PATH }}"
 
       # Install dependencies & restart backend
