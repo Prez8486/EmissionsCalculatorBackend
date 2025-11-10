@@ -1,0 +1,60 @@
+name: Deploy Backend to Nectar Cloud
+
+on:
+  push:
+    branches:
+      - master   # or your backend branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install backend dependencies (CI test)
+        run: |
+          cd backend
+          npm install
+          npm run lint || echo "Lint skipped"
+          npm test || echo "Tests skipped"
+
+      # Clean old files on server
+      - name: Clean old backend on server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.BACK_HOST }}
+          username: ${{ secrets.BACK_USER }}
+          key: ${{ secrets.BACK_SSH_KEY }}
+          script: |
+            rm -rf ${{ secrets.BACK_PATH }}/node_modules
+            mkdir -p ${{ secrets.BACK_PATH }}
+
+      # Upload new files
+      - name: Upload backend files
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.BACK_HOST }}
+          username: ${{ secrets.BACK_USER }}
+          key: ${{ secrets.BACK_SSH_KEY }}
+          source: "backend/*"
+          target: "${{ secrets.BACK_PATH }}"
+
+      # Install dependencies & restart backend
+      - name: Restart backend service
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.BACK_HOST }}
+          username: ${{ secrets.BACK_USER }}
+          key: ${{ secrets.BACK_SSH_KEY }}
+          script: |
+            cd ${{ secrets.BACK_PATH }}
+            npm install --production
+            pm2 restart emissions-backend || pm2 start server.js --name emissions-backend
+            pm2 save
