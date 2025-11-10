@@ -111,7 +111,7 @@ router.delete("/cancel/:friendId", auth, async (req, res) => {
     }
 });
 // Remove a friend
-router.delete('/remove/:friendId', verifyToken, async (req, res) => {
+router.delete('/remove/:friendId', auth, async (req, res) => {
     try {
         const userId = req.user.id;
         const friendId = req.params.friendId;
