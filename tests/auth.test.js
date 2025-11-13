@@ -7,7 +7,7 @@ beforeAll(async () => await connectDB());
 afterEach(async () => await clearDB());
 afterAll(async () => await closeDB());
 
-describe("?? Auth API Tests", () => {
+describe(" Auth API Tests", () => {
     test("Register a new user", async () => {
         const res = await request(app)
             .post("/api/auth/register")

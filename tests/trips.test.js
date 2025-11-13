@@ -48,7 +48,7 @@ afterAll(async () => {
     await mongoServer.stop();
 });
 
-describe("?? Trip API Tests", () => {
+describe("Trip API Tests", () => {
     // START TRIP ------------------------------------------------------
     test("Start a trip", async () => {
         const res = await request(app)

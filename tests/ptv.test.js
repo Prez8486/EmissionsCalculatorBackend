@@ -17,7 +17,7 @@ class MockResponse {
     }
 }
 
-describe("?? PTV API Tests (Mocked fetch)", () => {
+describe("PTV API Tests (Mocked fetch)", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });

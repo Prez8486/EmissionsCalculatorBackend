@@ -32,7 +32,7 @@ beforeAll(async () => {
 afterEach(async () => await clearDB());
 afterAll(async () => await closeDB());
 
-describe("?? Emissions API Tests", () => {
+describe(" Emissions API Tests", () => {
     test("Car emissions - mocked API call", async () => {
         axios.post.mockResolvedValue({
             data: { co2_kg: 1.23 },
