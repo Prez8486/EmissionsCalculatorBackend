@@ -13,6 +13,7 @@ describe("?? Auth API Tests", () => {
             .post("/api/auth/register")
             .send({
                 name: "Test User",
+                username: "test user",
                 email: "test@example.com",
                 password: "hello123",
             });
@@ -27,6 +28,7 @@ describe("?? Auth API Tests", () => {
     test("Login returns JWT token", async () => {
         await request(app).post("/api/auth/register").send({
             name: "Test User",
+            username: "test user",
             email: "test2@example.com",
             password: "hello123",
         });
@@ -42,6 +44,7 @@ describe("?? Auth API Tests", () => {
     test("Reject login with wrong password", async () => {
         await request(app).post("/api/auth/register").send({
             name: "Test User",
+            username: "test user",
             email: "wrong@example.com",
             password: "hello123",
         });

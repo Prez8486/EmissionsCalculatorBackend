@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="4" failures="0" errors="0" time="2.532">
-  <testsuite name="Friendship API" errors="0" failures="0" skipped="0" timestamp="2025-11-13T06:24:52" time="2.477" tests="4">
-    <testcase classname="Friendship API Send a friend request" name="Friendship API Send a friend request" time="0.02">
+<testsuites name="jest tests" tests="5" failures="0" errors="0" time="3.438">
+  <testsuite name="?? Friends API Tests" errors="0" failures="0" skipped="0" timestamp="2025-11-13T06:56:23" time="2.232" tests="2">
+    <testcase classname="?? Friends API Tests User A sends friend request to B" name="?? Friends API Tests User A sends friend request to B" time="0.03">
     </testcase>
-    <testcase classname="Friendship API Accept a friend request" name="Friendship API Accept a friend request" time="0.022">
+    <testcase classname="?? Friends API Tests Cannot send friend request to yourself" name="?? Friends API Tests Cannot send friend request to yourself" time="0.018">
     </testcase>
-    <testcase classname="Friendship API List friends of user A" name="Friendship API List friends of user A" time="0.02">
+  </testsuite>
+  <testsuite name="?? Auth API Tests" errors="0" failures="0" skipped="0" timestamp="2025-11-13T06:56:25" time="1.134" tests="3">
+    <testcase classname="?? Auth API Tests Register a new user" name="?? Auth API Tests Register a new user" time="0.119">
     </testcase>
-    <testcase classname="Friendship API Remove a friend" name="Friendship API Remove a friend" time="0.016">
+    <testcase classname="?? Auth API Tests Login returns JWT token" name="?? Auth API Tests Login returns JWT token" time="0.142">
+    </testcase>
+    <testcase classname="?? Auth API Tests Reject login with wrong password" name="?? Auth API Tests Reject login with wrong password" time="0.141">
     </testcase>
   </testsuite>
 </testsuites>

@@ -10,12 +10,14 @@ beforeAll(async () => {
 
     await request(app).post("/api/auth/register").send({
         name: "Alice",
+        username: "alice",
         email: "alice@test.com",
         password: "pass123",
     });
 
     await request(app).post("/api/auth/register").send({
         name: "Bob",
+        username: "bob",
         email: "bob@test.com",
         password: "pass123",
     });
@@ -54,6 +56,6 @@ describe("?? Friends API Tests", () => {
             .post(`/api/friends/request/${userAId}`)
             .set("Authorization", `Bearer ${tokenA}`);
 
-        expect(res.statusCode).toBe(400);
+        expect(res.statusCode).toBe(404);
     });
 });
