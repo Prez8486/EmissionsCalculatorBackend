@@ -7,7 +7,12 @@
     "name": ""
   },
   "devDependencies": {
-    "eslint": "^8.21.0"
+    "cross-env": "^10.1.0",
+    "eslint": "^8.21.0",
+    "jest": "^29.7.0",
+    "jest-junit": "^16.0.0",
+    "mongodb-memory-server": "^10.3.0",
+    "supertest": "^7.1.4"
   },
   "dependencies": {
     "axios": "^1.9.0",
@@ -19,7 +24,13 @@
     "mongoose": "^7.5.0"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles --reporters=default --reporters=jest-junit"
   },
-  "eslintConfig": {}
+  "eslintConfig": {},
+  "jest-junit": {
+    "outputDirectory": "test-results",
+    "outputName": "junit.xml"
+  }
+
 }
