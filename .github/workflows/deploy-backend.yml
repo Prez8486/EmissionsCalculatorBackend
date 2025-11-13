@@ -32,6 +32,14 @@ jobs:
             echo "running test"
             npm test
 
+      - name: Test Summary (GitHub Actions Test Reporter)
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: Backend Test Results
+          path: test-results/junit.xml
+          reporter: jest-junit
+
       - name: Upload Test Report Artifact
         if: always()     # Upload even if tests fail
         uses: actions/upload-artifact@v4
