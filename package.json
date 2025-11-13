@@ -30,7 +30,10 @@
   },
   "eslintConfig": {},
   "jest-junit": {
+    "suiteNameTemplate": "{filepath}",
     "outputDirectory": "test-results",
-    "outputName": "junit.xml"
+    "outputName": "junit.xml",
+    "classNameTemplate": "{classname}",
+    "titleTemplate": "{title}"
   }
 }
