@@ -9,9 +9,7 @@ const BASE_URL = "https://timetableapi.ptv.vic.gov.au";
 const auth = require("../middleware/authMiddleware");
 const fetch = require("node-fetch"); // Using node-fetch v2
 // Suppress console.error during tests
-beforeAll(() => {
-    jest.spyOn(console, "error").mockImplementation(() => { });
-});
+
 function generateSignature(path) {
     // Path must start with '/' (e.g. '/v3/departures/route_type/0/stop/1071')
     const raw = path + "?devid=" + DEV_ID;
