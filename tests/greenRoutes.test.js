@@ -61,13 +61,13 @@ const app = express();
 app.use(express.json());
 app.use("/api/routes", router);
 
-describe("?? Green Routes API Tests", () => {
+describe("Green Routes API Tests", () => {
 
     // -------------------------
     // 1. VALIDATION TESTS
     // -------------------------
 
-    test("? Missing start/destination returns 400", async () => {
+    test("Missing start/destination returns 400", async () => {
         const res = await request(app)
             .post("/api/routes/calculate")
             .send({ start: null, destination: null });
@@ -76,7 +76,7 @@ describe("?? Green Routes API Tests", () => {
         expect(res.body.message).toMatch(/Missing required fields/);
     });
 
-    test("? Invalid transport mode throws error", async () => {
+    test("Invalid transport mode throws error", async () => {
         const res = await request(app)
             .post("/api/routes/calculate")
             .send({
@@ -89,7 +89,7 @@ describe("?? Green Routes API Tests", () => {
         expect(res.body.message).toMatch(/Invalid transport modes/);
     });
 
-    test("? No modes enabled returns 400", async () => {
+    test("No modes enabled returns 400", async () => {
         const res = await request(app)
             .post("/api/routes/calculate")
             .send({
@@ -105,7 +105,7 @@ describe("?? Green Routes API Tests", () => {
     // 2. SUCCESS TEST
     // -------------------------
 
-    test("? Successful route calculation returns formatted routes", async () => {
+    test("Successful route calculation returns formatted routes", async () => {
         const res = await request(app)
             .post("/api/routes/calculate")
             .send({
@@ -125,7 +125,7 @@ describe("?? Green Routes API Tests", () => {
     // 3. GRAPH STATS TEST
     // -------------------------
 
-    test("?? Graph stats returns stats object", async () => {
+    test("Graph stats returns stats object", async () => {
         const res = await request(app).get("/api/routes/graph-stats");
 
         expect(res.status).toBe(200);
@@ -137,7 +137,7 @@ describe("?? Green Routes API Tests", () => {
     // 4. TEST PYTHON BRIDGE CONNECTION
     // -------------------------
 
-    test("?? Python bridge test returns success", async () => {
+    test("Python bridge test returns success", async () => {
         const res = await request(app).get("/api/routes/test-connection");
 
         expect(res.status).toBe(200);
@@ -148,7 +148,7 @@ describe("?? Green Routes API Tests", () => {
     // 5. POST TRIP ANALYSIS
     // -------------------------
 
-    test("? Missing fields in post-trip-analysis returns 400", async () => {
+    test("Missing fields in post-trip-analysis returns 400", async () => {
         const res = await request(app)
             .post("/api/routes/post-trip-analysis")
             .send({
@@ -160,7 +160,7 @@ describe("?? Green Routes API Tests", () => {
         expect(res.body.message).toMatch(/Missing required fields/);
     });
 
-    test("? Successful post-trip analysis returns comparison", async () => {
+    test("Successful post-trip analysis returns comparison", async () => {
         const res = await request(app)
             .post("/api/routes/post-trip-analysis")
             .send({

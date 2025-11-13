@@ -26,12 +26,12 @@ const app = express();
 app.use(express.json());
 app.use("/api/ai", routes);
 
-describe("?? AI API Tests", () => {
+describe(" AI API Tests", () => {
 
     // --------------------------------------------------
     // 1. HEALTH CHECK
     // --------------------------------------------------
-    test("? GET /api/ai/health returns AI service status", async () => {
+    test(" GET /api/ai/health returns AI service status", async () => {
         // Mock the controller response
         AIController.checkAIHealth.mockImplementation((req, res) => {
             return res.status(200).json({
@@ -50,7 +50,7 @@ describe("?? AI API Tests", () => {
     // --------------------------------------------------
     // 2. PREDICT — SUCCESS
     // --------------------------------------------------
-    test("?? POST /api/ai/predict returns predicted transport mode", async () => {
+    test(" POST /api/ai/predict returns predicted transport mode", async () => {
         AIController.predictTransportMode.mockImplementation((req, res) => {
             return res.status(200).json({
                 mode: "car",
@@ -73,7 +73,7 @@ describe("?? AI API Tests", () => {
     // --------------------------------------------------
     // 3. PREDICT — MISSING BODY DATA
     // --------------------------------------------------
-    test("? POST /api/ai/predict missing sensor data returns 400", async () => {
+    test(" POST /api/ai/predict missing sensor data returns 400", async () => {
         AIController.predictTransportMode.mockImplementation((req, res) => {
             return res.status(400).json({
                 error: "Sensor data missing"
@@ -91,7 +91,7 @@ describe("?? AI API Tests", () => {
     // --------------------------------------------------
     // 4. PREDICT — SERVER ERROR
     // --------------------------------------------------
-    test("?? AI prediction error returns 500", async () => {
+    test(" AI prediction error returns 500", async () => {
         AIController.predictTransportMode.mockImplementation((req, res) => {
             return res.status(500).json({
                 error: "AI model crashed"

@@ -42,7 +42,7 @@ beforeAll(async () => {
 afterEach(async () => await clearDB());
 afterAll(async () => await closeDB());
 
-describe("?? Friends API Tests", () => {
+describe(" Friends API Tests", () => {
     test("User A sends friend request to B", async () => {
         const res = await request(app)
             .post(`/api/friends/request/${userBId}`)
