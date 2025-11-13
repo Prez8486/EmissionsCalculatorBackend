@@ -42,6 +42,7 @@
     <Content Include="server.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="tests\friends.test.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include=".github\workflows\" />
@@ -49,6 +50,7 @@
     <Folder Include="middleware\" />
     <Folder Include="models\" />
     <Folder Include=".github\" />
+    <Folder Include="tests\" />
     <Folder Include="routes\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
