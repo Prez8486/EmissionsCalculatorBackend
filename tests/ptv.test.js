@@ -2,7 +2,9 @@ jest.mock("node-fetch", () => jest.fn());
 const fetch = require("node-fetch");
 const request = require("supertest");
 const app = require("../server");
-
+beforeAll(() => {
+    jest.spyOn(console, "error").mockImplementation(() => { });
+});
 // Simple mock Response for fetch
 class MockResponse {
     constructor(body, status = 200) {
