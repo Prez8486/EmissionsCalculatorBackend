@@ -42,11 +42,14 @@
     <Content Include="server.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="tests\ai.test.js" />
     <Content Include="tests\auth.test.js" />
     <Content Include="tests\emissions.test.js" />
     <Content Include="tests\friends.test.js" />
+    <Content Include="tests\greenRoutes.test.js" />
     <Content Include="tests\ptv.test.js" />
     <Content Include="tests\testUtils.js" />
+    <Content Include="tests\trips.test.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include=".github\workflows\" />
