@@ -42,7 +42,9 @@
     <Content Include="server.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+    <Content Include="tests\auth.test.js" />
     <Content Include="tests\friends.test.js" />
+    <Content Include="tests\testUtils.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include=".github\workflows\" />
