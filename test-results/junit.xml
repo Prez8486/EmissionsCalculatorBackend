@@ -1,47 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="18" failures="0" errors="0" time="4.849">
-  <testsuite name="?? Emissions API Tests" errors="0" failures="0" skipped="0" timestamp="2025-11-13T07:33:31" time="2.196" tests="8">
-    <testcase classname="?? Emissions API Tests Car emissions - mocked API call" name="?? Emissions API Tests Car emissions - mocked API call" time="0.019">
+<testsuites name="jest tests" tests="36" failures="0" errors="0" time="6.272">
+  <testsuite name="?? AI API Tests" errors="0" failures="0" skipped="0" timestamp="2025-11-13T07:43:55" time="0.714" tests="4">
+    <testcase classname="?? AI API Tests ? GET /api/ai/health returns AI service status" name="?? AI API Tests ? GET /api/ai/health returns AI service status" time="0.044">
     </testcase>
-    <testcase classname="?? Emissions API Tests Bus emissions calculation" name="?? Emissions API Tests Bus emissions calculation" time="0.014">
+    <testcase classname="?? AI API Tests ?? POST /api/ai/predict returns predicted transport mode" name="?? AI API Tests ?? POST /api/ai/predict returns predicted transport mode" time="0.02">
     </testcase>
-    <testcase classname="?? Emissions API Tests Metro emissions calculation" name="?? Emissions API Tests Metro emissions calculation" time="0.016">
+    <testcase classname="?? AI API Tests ? POST /api/ai/predict missing sensor data returns 400" name="?? AI API Tests ? POST /api/ai/predict missing sensor data returns 400" time="0.01">
     </testcase>
-    <testcase classname="?? Emissions API Tests Tram emissions calculation" name="?? Emissions API Tests Tram emissions calculation" time="0.013">
+    <testcase classname="?? AI API Tests ?? AI prediction error returns 500" name="?? AI API Tests ?? AI prediction error returns 500" time="0.012">
     </testcase>
-    <testcase classname="?? Emissions API Tests Flight emissions - mocked" name="?? Emissions API Tests Flight emissions - mocked" time="0.015">
+  </testsuite>
+  <testsuite name="?? Trip API Tests" errors="0" failures="0" skipped="0" timestamp="2025-11-13T07:43:56" time="1.641" tests="6">
+    <testcase classname="?? Trip API Tests Start a trip" name="?? Trip API Tests Start a trip" time="0.016">
     </testcase>
-    <testcase classname="?? Emissions API Tests Log a new emission for authenticated user" name="?? Emissions API Tests Log a new emission for authenticated user" time="0.023">
+    <testcase classname="?? Trip API Tests Get trip by ID" name="?? Trip API Tests Get trip by ID" time="0.013">
+    </testcase>
+    <testcase classname="?? Trip API Tests Get all trips for user" name="?? Trip API Tests Get all trips for user" time="0.013">
+    </testcase>
+    <testcase classname="?? Trip API Tests Start trip should fail without transportMode" name="?? Trip API Tests Start trip should fail without transportMode" time="0.01">
+    </testcase>
+    <testcase classname="?? Trip API Tests End trip should fail with wrong tripId" name="?? Trip API Tests End trip should fail with wrong tripId" time="0.011">
+    </testcase>
+    <testcase classname="?? Trip API Tests Get trip by ID should fail with invalid id" name="?? Trip API Tests Get trip by ID should fail with invalid id" time="0.009">
+    </testcase>
+  </testsuite>
+  <testsuite name="?? Auth API Tests" errors="0" failures="0" skipped="0" timestamp="2025-11-13T07:43:57" time="1.196" tests="3">
+    <testcase classname="?? Auth API Tests Register a new user" name="?? Auth API Tests Register a new user" time="0.114">
+    </testcase>
+    <testcase classname="?? Auth API Tests Login returns JWT token" name="?? Auth API Tests Login returns JWT token" time="0.146">
+    </testcase>
+    <testcase classname="?? Auth API Tests Reject login with wrong password" name="?? Auth API Tests Reject login with wrong password" time="0.145">
+    </testcase>
+  </testsuite>
+  <testsuite name="?? Emissions API Tests" errors="0" failures="0" skipped="0" timestamp="2025-11-13T07:43:58" time="1.067" tests="8">
+    <testcase classname="?? Emissions API Tests Car emissions - mocked API call" name="?? Emissions API Tests Car emissions - mocked API call" time="0.013">
+    </testcase>
+    <testcase classname="?? Emissions API Tests Bus emissions calculation" name="?? Emissions API Tests Bus emissions calculation" time="0.012">
+    </testcase>
+    <testcase classname="?? Emissions API Tests Metro emissions calculation" name="?? Emissions API Tests Metro emissions calculation" time="0.012">
+    </testcase>
+    <testcase classname="?? Emissions API Tests Tram emissions calculation" name="?? Emissions API Tests Tram emissions calculation" time="0.015">
+    </testcase>
+    <testcase classname="?? Emissions API Tests Flight emissions - mocked" name="?? Emissions API Tests Flight emissions - mocked" time="0.013">
+    </testcase>
+    <testcase classname="?? Emissions API Tests Log a new emission for authenticated user" name="?? Emissions API Tests Log a new emission for authenticated user" time="0.022">
     </testcase>
     <testcase classname="?? Emissions API Tests Fetch emissions history" name="?? Emissions API Tests Fetch emissions history" time="0.02">
     </testcase>
-    <testcase classname="?? Emissions API Tests Fetch leaderboard" name="?? Emissions API Tests Fetch leaderboard" time="0.025">
+    <testcase classname="?? Emissions API Tests Fetch leaderboard" name="?? Emissions API Tests Fetch leaderboard" time="0.021">
     </testcase>
   </testsuite>
-  <testsuite name="?? PTV API Tests (Mocked fetch)" errors="0" failures="0" skipped="0" timestamp="2025-11-13T07:33:34" time="0.289" tests="5">
-    <testcase classname="?? PTV API Tests (Mocked fetch) Departures endpoint returns mocked data" name="?? PTV API Tests (Mocked fetch) Departures endpoint returns mocked data" time="0.016">
+  <testsuite name="?? Friends API Tests" errors="0" failures="0" skipped="0" timestamp="2025-11-13T07:44:00" time="1.076" tests="2">
+    <testcase classname="?? Friends API Tests User A sends friend request to B" name="?? Friends API Tests User A sends friend request to B" time="0.025">
+    </testcase>
+    <testcase classname="?? Friends API Tests Cannot send friend request to yourself" name="?? Friends API Tests Cannot send friend request to yourself" time="0.017">
+    </testcase>
+  </testsuite>
+  <testsuite name="?? Green Routes API Tests" errors="0" failures="0" skipped="0" timestamp="2025-11-13T07:44:01" time="0.155" tests="8">
+    <testcase classname="?? Green Routes API Tests ? Missing start/destination returns 400" name="?? Green Routes API Tests ? Missing start/destination returns 400" time="0.012">
+    </testcase>
+    <testcase classname="?? Green Routes API Tests ? Invalid transport mode throws error" name="?? Green Routes API Tests ? Invalid transport mode throws error" time="0.008">
+    </testcase>
+    <testcase classname="?? Green Routes API Tests ? No modes enabled returns 400" name="?? Green Routes API Tests ? No modes enabled returns 400" time="0.007">
+    </testcase>
+    <testcase classname="?? Green Routes API Tests ? Successful route calculation returns formatted routes" name="?? Green Routes API Tests ? Successful route calculation returns formatted routes" time="0.009">
+    </testcase>
+    <testcase classname="?? Green Routes API Tests ?? Graph stats returns stats object" name="?? Green Routes API Tests ?? Graph stats returns stats object" time="0.007">
+    </testcase>
+    <testcase classname="?? Green Routes API Tests ?? Python bridge test returns success" name="?? Green Routes API Tests ?? Python bridge test returns success" time="0.006">
+    </testcase>
+    <testcase classname="?? Green Routes API Tests ? Missing fields in post-trip-analysis returns 400" name="?? Green Routes API Tests ? Missing fields in post-trip-analysis returns 400" time="0.006">
+    </testcase>
+    <testcase classname="?? Green Routes API Tests ? Successful post-trip analysis returns comparison" name="?? Green Routes API Tests ? Successful post-trip analysis returns comparison" time="0.007">
+    </testcase>
+  </testsuite>
+  <testsuite name="?? PTV API Tests (Mocked fetch)" errors="0" failures="0" skipped="0" timestamp="2025-11-13T07:44:01" time="0.262" tests="5">
+    <testcase classname="?? PTV API Tests (Mocked fetch) Departures endpoint returns mocked data" name="?? PTV API Tests (Mocked fetch) Departures endpoint returns mocked data" time="0.01">
     </testcase>
     <testcase classname="?? PTV API Tests (Mocked fetch) Stop search returns mocked stops" name="?? PTV API Tests (Mocked fetch) Stop search returns mocked stops" time="0.008">
     </testcase>
-    <testcase classname="?? PTV API Tests (Mocked fetch) Route info returns mocked route" name="?? PTV API Tests (Mocked fetch) Route info returns mocked route" time="0.011">
+    <testcase classname="?? PTV API Tests (Mocked fetch) Route info returns mocked route" name="?? PTV API Tests (Mocked fetch) Route info returns mocked route" time="0.006">
     </testcase>
-    <testcase classname="?? PTV API Tests (Mocked fetch) Stops by stopId + routeType returns mocked list" name="?? PTV API Tests (Mocked fetch) Stops by stopId + routeType returns mocked list" time="0.007">
+    <testcase classname="?? PTV API Tests (Mocked fetch) Stops by stopId + routeType returns mocked list" name="?? PTV API Tests (Mocked fetch) Stops by stopId + routeType returns mocked list" time="0.006">
     </testcase>
-    <testcase classname="?? PTV API Tests (Mocked fetch) Handles PTV API failure gracefully" name="?? PTV API Tests (Mocked fetch) Handles PTV API failure gracefully" time="0.007">
-    </testcase>
-  </testsuite>
-  <testsuite name="?? Friends API Tests" errors="0" failures="0" skipped="0" timestamp="2025-11-13T07:33:34" time="1.069" tests="2">
-    <testcase classname="?? Friends API Tests User A sends friend request to B" name="?? Friends API Tests User A sends friend request to B" time="0.026">
-    </testcase>
-    <testcase classname="?? Friends API Tests Cannot send friend request to yourself" name="?? Friends API Tests Cannot send friend request to yourself" time="0.016">
-    </testcase>
-  </testsuite>
-  <testsuite name="?? Auth API Tests" errors="0" failures="0" skipped="0" timestamp="2025-11-13T07:33:35" time="1.183" tests="3">
-    <testcase classname="?? Auth API Tests Register a new user" name="?? Auth API Tests Register a new user" time="0.126">
-    </testcase>
-    <testcase classname="?? Auth API Tests Login returns JWT token" name="?? Auth API Tests Login returns JWT token" time="0.152">
-    </testcase>
-    <testcase classname="?? Auth API Tests Reject login with wrong password" name="?? Auth API Tests Reject login with wrong password" time="0.142">
+    <testcase classname="?? PTV API Tests (Mocked fetch) Handles PTV API failure gracefully" name="?? PTV API Tests (Mocked fetch) Handles PTV API failure gracefully" time="0.009">
     </testcase>
   </testsuite>
 </testsuites>
