@@ -26,34 +26,36 @@ def calculate_routes(start_lat, start_lon, dest_lat, dest_lon, enabled_modes, ma
         # Get graph service
         graph_service = get_graph_service()
         
-        # Step 1: Find nearest nodes
-        start_node, start_dist = graph_service.find_nearest_node(
+        # Step 1: Find all candidate nodes (within 2 km)
+        start_candidates = graph_service.find_candidate_nodes(
             start_lat, start_lon, 
             mode_filter=enabled_modes,
-            max_distance_km=2.0
+            max_distance_km=0.5,
+            max_candidates=5
         )
         
-        if start_node is None:
+        dest_candidates = graph_service.find_candidate_nodes(
+            dest_lat, dest_lon,
+            mode_filter=enabled_modes,
+            max_distance_km=0.5,
+            max_candidates=5
+        )
+        
+        if not start_candidates:
             return {
                 'status': 'error',
                 'message': 'Could not find nearby start location on transport network',
                 'suggestion': 'Try a different starting point or enable more transport modes'
             }
         
-        dest_node, dest_dist = graph_service.find_nearest_node(
-            dest_lat, dest_lon,
-            mode_filter=enabled_modes,
-            max_distance_km=2.0
-        )
-        
-        if dest_node is None:
+        if not dest_candidates:
             return {
                 'status': 'error',
                 'message': 'Could not find nearby destination on transport network',
                 'suggestion': 'Try a different destination or enable more transport modes'
             }
         
-        # Step 2: Filter graph by enabled modes
+        # Step 2: Filter Graph by Enabled Modes
         filtered_graph = graph_service.filter_graph_by_modes(enabled_modes)
         
         if filtered_graph.number_of_edges() == 0:
@@ -63,46 +65,60 @@ def calculate_routes(start_lat, start_lon, dest_lat, dest_lon, enabled_modes, ma
                 'suggestion': 'Please enable at least one transport mode'
             }
         
-        # Step 3: Calculate fastest route (by time)
-        try:
-            fastest_path = nx.shortest_path(
-                filtered_graph,
-                source=start_node,
-                target=dest_node,
-                weight='time'
-            )
-            fastest_metrics = graph_service.calculate_route_metrics(fastest_path)
-        except nx.NetworkXNoPath:
+        # Step 3: Try all candidate combinations
+        fastest_path = None
+        fastest_metrics = None
+        greenest_path = None
+        greenest_metrics = None
+
+        for start_node, start_dist in start_candidates:
+            for dest_node, dest_dist in dest_candidates:
+                try:
+                    #Try to find fastest path for candidate pair
+                    candidate_fastest = nx.shortest_path(
+                        filtered_graph,
+                        source=start_node,
+                        target=dest_node,
+                        weight='time'
+                    )
+                    candidate_fastest_metrics = graph_service.calculate_route_metrics(candidate_fastest)  
+                    
+                    #Check if this is better than current fastest path
+                    if fastest_metrics is None or candidate_fastest_metrics['total_time_min'] < fastest_metrics['total_time_min']:
+                        fastest_path = candidate_fastest
+                        fastest_metrics = candidate_fastest_metrics
+                        best_start_node = start_node
+                        best_start_dist = start_dist
+                        best_dest_node = dest_node
+                        best_dest_dist = dest_dist
+
+                except nx.NetworkXNoPath:
+                    continue  # Try next candidate pair
+                except Exception as e:
+                    continue  # Try next candidate pair
+
+        if fastest_path is None:
             return {
                 'status': 'error',
                 'message': 'No route found between start and destination',
                 'suggestion': 'Try enabling more transport modes or check if locations are accessible',
                 'debug': {
-                    'start_node': start_node,
-                    'dest_node': dest_node,
+                    'start_candidates': [node for node, dist in start_candidates],
+                    'dest_candidates': [node for node, dist in dest_candidates],
                     'enabled_modes': enabled_modes
                 }
             }
-        except Exception as e:
-            return {
-                'status': 'error',
-                'message': f'Error calculating fastest route: {str(e)}'
-            }
         
-        # Step 4: Calculate greenest route (by emissions)
+        #Step 4: Calculate greenest route (by emissions) for best candidate pair
         try:
             greenest_path = nx.shortest_path(
                 filtered_graph,
-                source=start_node,
-                target=dest_node,
+                source=best_start_node,
+                target=best_dest_node,
                 weight='emissions'
             )
             greenest_metrics = graph_service.calculate_route_metrics(greenest_path)
-        except nx.NetworkXNoPath:
-            # Same error as fastest (shouldn't happen if fastest succeeded)
-            greenest_path = fastest_path
-            greenest_metrics = fastest_metrics
-        except Exception as e:
+        except (nx.NetworkXNoPath, Exception):
             # Fallback to fastest route
             greenest_path = fastest_path
             greenest_metrics = fastest_metrics
@@ -129,10 +145,10 @@ def calculate_routes(start_lat, start_lon, dest_lat, dest_lon, enabled_modes, ma
         response = {
             'status': 'success',
             'snap_info': {
-                'start_node': start_node,
-                'start_distance_km': round(start_dist, 3),
-                'dest_node': dest_node,
-                'dest_distance_km': round(dest_dist, 3)
+                'start_node': best_start_node,
+                'start_snap_distance_m': round(best_start_dist * 1000, 1),  # Convert km to meters
+                'dest_node': best_dest_node,
+                'end_snap_distance_m': round(best_dest_dist * 1000, 1)      # Convert km to meters
             },
             'routes': {
                 'fastest': {

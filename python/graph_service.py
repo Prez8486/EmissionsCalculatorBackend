@@ -77,11 +77,19 @@ class GraphService:
             
             # Filter by node type if specified
             if mode_filter:
-                node_type = data.get('node_type', '')
-                # Check if node connects to allowed modes
-                if mode_filter == ['car'] and not node.startswith('road_'):
-                    continue
-                elif 'car' not in mode_filter and node.startswith('road_'):
+                # Only include nodes that are compatible with at least one enabled mode
+                node_compatible = False
+                
+                if node.startswith('road_') and ('car' in mode_filter or 'walk' in mode_filter):
+                    node_compatible = True
+                elif node.startswith('train_') and 'train' in mode_filter:
+                    node_compatible = True
+                elif node.startswith('tram_') and 'tram' in mode_filter:
+                    node_compatible = True
+                elif node.startswith('bus_') and 'bus' in mode_filter:
+                    node_compatible = True
+                
+                if not node_compatible:
                     continue
             
             distance = self.haversine_distance(lat, lon, data['lat'], data['lon'])
@@ -94,6 +102,24 @@ class GraphService:
             return None, None
         
         return nearest_node, min_distance
+    
+    def find_candidate_nodes(self, lat, lon, mode_filter=None, max_distance_km=2.0, max_candidates=5):
+        """
+        Find all nodes within given radius"""
+
+        candidates = []
+
+        for node, data in self.graph.nodes(data=True):
+            if 'lat' not in data or 'lon' not in data:
+                continue
+            
+            distance = self.haversine_distance(lat, lon, data['lat'], data['lon'])
+            
+            if distance <= max_distance_km:
+                if self.is_node_compatible(node, mode_filter):
+                    candidates.append((node, distance))
+
+        return sorted(candidates, key=lambda x: x[1])[:max_candidates]
     
     def filter_graph_by_modes(self, enabled_modes):
         """
@@ -129,6 +155,30 @@ class GraphService:
             ]
         
         return self.graph.edge_subgraph(filtered_edges)
+    
+    def is_node_compatible(self, node, mode_filter=None):
+        """
+        Check if a node is compatible with the given mode filter
+        """
+        if mode_filter is None:
+            return True
+        
+        # Check node type compatibility with STRICTER logic
+        if node.startswith('road_'):
+            # Road nodes ONLY for car mode (not for walking between public transport)
+            return 'car' in mode_filter
+        elif node.startswith('train_'):
+            return 'train' in mode_filter
+        elif node.startswith('tram_'):
+            return 'tram' in mode_filter
+        elif node.startswith('bus_'):
+            return 'bus' in mode_filter
+        elif node.startswith('pt_'):  # Public transport nodes
+            # PT nodes should work with any public transport mode
+            return any(mode in mode_filter for mode in ['train', 'tram', 'bus', 'walk'])
+        
+        # Default: allow unknown node types
+        return True
     
     def get_edge_data_between_nodes(self, node1, node2):
         """Get all edge data between two nodes (for multigraphs)"""
