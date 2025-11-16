@@ -32,12 +32,14 @@
     <Content Include=".github\workflows\deploy-backend.yml" />
     <Content Include="controllers\authController.js" />
     <Content Include="controllers\emissionController.js" />
+    <Content Include="controllers\greenRouteController.js" />
     <Content Include="middleware\authMiddleware.js" />
     <Content Include="models\Emission.js" />
     <Content Include="models\User.js" />
     <Content Include="routes\auth.js" />
     <Content Include="routes\emissions.js" />
     <Content Include="routes\friends.js" />
+    <Content Include="routes\green_routes.js" />
     <Content Include="routes\ptv.js" />
     <Content Include="server.js" />
     <Content Include="package.json" />

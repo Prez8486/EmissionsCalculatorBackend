@@ -579,31 +579,7 @@ function calculateEnvironmentalImpact(emissionsKg) {
   };
 }
 
-// Calculate environmental impact metrics
-function calculateEnvironmentalImpact(emissionsKg) {
-  // Trees needed to offset (1 tree absorbs ~22kg CO2/year)
-  const treesNeeded = Math.ceil(emissionsKg / 22);
-  
-  // Plastic bottles equivalent (1 bottle = ~0.04kg CO2)
-  const plasticBottles = Math.round(emissionsKg / 0.04);
-  
-  // Sea-level rise contribution (1 tonne CO2 = ~0.0015mm)
-  const seaLevelMm = parseFloat(((emissionsKg / 1000) * 0.0015).toFixed(6));
-  
-  // Temperature contribution (1 tonne CO2 = ~0.0000015°C)
-  const temperatureCelsius = parseFloat(((emissionsKg / 1000) * 0.0000015).toFixed(9));
-  
-  // Disaster frequency impact (statistical correlation ~0.002% per tonne)
-  const disasterFrequencyPercent = parseFloat(((emissionsKg / 1000) * 0.00002).toFixed(7));
 
-  return {
-    trees_needed: treesNeeded,
-    plastic_bottles_equivalent: plasticBottles,
-    sea_level_rise_mm: seaLevelMm,
-    temperature_impact_celsius: temperatureCelsius,
-    disaster_frequency_increase_percent: disasterFrequencyPercent
-  };
-}
 
 // Calculate Melbourne collective impact (5M population)
 function calculateMelbourneCollectiveImpact(savingsKg, tripsPerYear = 365) {
