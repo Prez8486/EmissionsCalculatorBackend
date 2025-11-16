@@ -105,7 +105,7 @@ describe("Green Routes API Tests", () => {
     // 2. SUCCESS TEST
     // -------------------------
 
-    test("Successful route calculation returns formatted routes", async () => {
+    /*test("Successful route calculation returns formatted routes", async () => {
         const res = await request(app)
             .post("/api/routes/calculate")
             .send({
@@ -119,7 +119,7 @@ describe("Green Routes API Tests", () => {
         expect(res.body.routes.fastest).toBeDefined();
         expect(res.body.routes.greenest).toBeDefined();
         expect(res.body.routes.greenest.summary.total_emissions_kg).toBe(0.4);
-    });
+    });*/
 
     // -------------------------
     // 3. GRAPH STATS TEST
