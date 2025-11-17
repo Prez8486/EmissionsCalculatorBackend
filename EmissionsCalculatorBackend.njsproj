@@ -35,9 +35,11 @@
     <Content Include="controllers\greenRouteController.js" />
     <Content Include="middleware\authMiddleware.js" />
     <Content Include="models\Emission.js" />
+    <Content Include="models\Post.js" />
     <Content Include="models\User.js" />
     <Content Include="routes\auth.js" />
     <Content Include="routes\emissions.js" />
+    <Content Include="routes\feed.js" />
     <Content Include="routes\friends.js" />
     <Content Include="routes\green_routes.js" />
     <Content Include="routes\ptv.js" />

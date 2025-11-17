@@ -10,6 +10,7 @@ const aiRoutes = require('./routes/ai');
 const routeRoutes = require('./routes/green_routes');
 const friendsRoutes = require('./routes/friends');
 const ptvRoutes = require('./routes/ptv');
+const feedRoutes = require('./routes/feed');
 
 dotenv.config();
 
@@ -38,6 +39,7 @@ app.use('/api/ai', aiRoutes);
 app.use('/api/routes', routeRoutes)
 app.use('/api/friends', friendsRoutes);
 app.use('/api/ptv', ptvRoutes);
+app.use('/api/feed', feedRoutes);
 
 
 
