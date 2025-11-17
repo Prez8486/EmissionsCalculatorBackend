@@ -26,8 +26,8 @@ class PythonBridge {
         ...data,
         graph_path: graphPath
       };
-      
-      const jsonInput = JSON.stringify(data);
+
+        const jsonInput = JSON.stringify(dataWithPath);
 
       // Spawn Python process
       const pythonProcess = spawn(this.pythonPath, [scriptPath, jsonInput]);

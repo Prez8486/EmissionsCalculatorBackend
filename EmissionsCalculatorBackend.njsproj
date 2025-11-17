@@ -52,6 +52,10 @@
     <Content Include="tests\ptv.test.js" />
     <Content Include="tests\testUtils.js" />
     <Content Include="tests\trips.test.js" />
+    <Content Include="utils\authGuard.js" />
+    <Content Include="utils\emissionsCalculator.js" />
+    <Content Include="utils\geoUtils.js" />
+    <Content Include="utils\pythonBridge.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include=".github\workflows\" />
@@ -61,6 +65,7 @@
     <Folder Include=".github\" />
     <Folder Include="tests\" />
     <Folder Include="routes\" />
+    <Folder Include="utils\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>
