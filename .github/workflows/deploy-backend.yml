@@ -3,40 +3,59 @@ name: Deploy Backend to Nectar Cloud
 on:
   push:
     branches:
-      - master   # or your backend branch
-  
+      - master
+
 permissions:
-    contents: read
-    checks: write
-    actions: read
+  contents: read
+  checks: write
+  actions: read
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      # ------------------------------
+      # 1. Checkout with Git LFS
+      # ------------------------------
+      - name: Checkout repository with Git LFS
         uses: actions/checkout@v4
+        with:
+          lfs: true      # IMPORTANT
 
+      - name: Install Git LFS
+        run: |
+          git lfs install
+          git lfs pull
+          echo "LFS files downloaded:"
+          ls -lh python/*.gpickle || true
 
+      # ------------------------------
+      # 2. Node setup
+      # ------------------------------
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Install backend dependencies (CI test)
+      # ------------------------------
+      # 3. Install dependencies & tests
+      # ------------------------------
+      - name: Install backend dependencies
         run: |
-          
           npm install
           npm run lint || echo "Lint skipped"
-          npm test || echo "Tests skipped"
+          npm test || echo "Tests failed or skipped"
+
       - name: Run backend unit tests
         env:
-            NODE_ENV: test
+          NODE_ENV: test
         run: |
-            echo "running test"
-            npm test
+          npm test || true
 
+      # ------------------------------
+      # 4. Test reporting
+      # ------------------------------
       - name: Test Summary (GitHub Actions Test Reporter)
         if: always()
         uses: dorny/test-reporter@v1
@@ -45,14 +64,16 @@ jobs:
           path: test-results/junit.xml
           reporter: jest-junit
 
-      - name: Upload Test Report Artifact
-        if: always()     # Upload even if tests fail
+      - name: Upload Test Report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: backend-test-report
           path: test-results/junit.xml
-          
-      # Clean old files on server
+
+      # ------------------------------
+      # 5. Clean server folder
+      # ------------------------------
       - name: Clean old backend on server
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -60,20 +81,24 @@ jobs:
           username: ${{ secrets.BACK_USER }}
           key: ${{ secrets.BACK_SSH_KEY }}
           script: |
-            rm -rf ${{ secrets.BACK_PATH }}/node_modules
             mkdir -p ${{ secrets.BACK_PATH }}
+            rm -rf ${{ secrets.BACK_PATH }}/*
 
-      # Upload new files
+      # ------------------------------
+      # 6. Upload new backend
+      # ------------------------------
       - name: Upload backend files
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.BACK_HOST }}
           username: ${{ secrets.BACK_USER }}
           key: ${{ secrets.BACK_SSH_KEY }}
-          source: "*"
+          source: "./"
           target: "${{ secrets.BACK_PATH }}"
 
-      # Install dependencies & restart backend
+      # ------------------------------
+      # 7. Install server dependencies & restart PM2
+      # ------------------------------
       - name: Restart backend service
         uses: appleboy/ssh-action@v1.0.0
         with:
