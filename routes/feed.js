@@ -56,9 +56,9 @@ router.post("/share-trip", auth, async (req, res) => {
         const { mode, distanceKm, emissionKg } = req.body;
 
         const content =
-            Completed a ${ mode } trip!\n +
-            • Distance: ${ distanceKm } km\n +
-            • Emissions: ${ emissionKg.toFixed(2) } kg CO?;
+            `Completed a ${ mode } trip!\n `+
+            `• Distance: ${ distanceKm } km\n `+
+            `• Emissions: ${ emissionKg.toFixed(2) } kg CO?`;
 
         const post = await Post.create({
             user: req.user.id,
