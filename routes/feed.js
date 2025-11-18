@@ -50,5 +50,26 @@ router.post("/:id/like", auth, async (req, res) => {
         res.status(500).json({ success: false, error: error.message });
     }
 });
+// Share Trip Post
+router.post("/share-trip", auth, async (req, res) => {
+    try {
+        const { mode, distanceKm, emissionKg } = req.body;
+
+        const content =
+            Completed a ${ mode } trip!\n +
+            • Distance: ${ distanceKm } km\n +
+            • Emissions: ${ emissionKg.toFixed(2) } kg CO?;
+
+        const post = await Post.create({
+            user: req.user.id,
+            content,
+            image: req.body.image || null
+        });
+
+        res.json({ success: true, post });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
 
 module.exports = router;
