@@ -49,6 +49,7 @@
     <Content Include="tests\ai.test.js" />
     <Content Include="tests\auth.test.js" />
     <Content Include="tests\emissions.test.js" />
+    <Content Include="tests\feed.test.js" />
     <Content Include="tests\friends.test.js" />
     <Content Include="tests\greenRoutes.test.js" />
     <Content Include="tests\ptv.test.js" />
