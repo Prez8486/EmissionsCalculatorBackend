@@ -1,36 +1,40 @@
 const request = require("supertest");
 const mongoose = require("mongoose");
 const { MongoMemoryServer } = require("mongodb-memory-server");
-const app = require("../server");           // Your Express app
-const Post = require("../models/Post");
+
+const app = require("../server");
 const User = require("../models/User");
-const jwt = require("jsonwebtoken");
+const Post = require("../models/Post");
 
 let mongoServer;
 let token;
 let userId;
 
 beforeAll(async () => {
-    // Start in-memory MongoDB
     mongoServer = await MongoMemoryServer.create();
     const uri = mongoServer.getUri();
-
     await mongoose.connect(uri);
 
-    // Create test user
-    const user = await User.create({
-        name: "Test User",
-        username: "Test User",
-        email: "test@example.com",
-        password: "password123"
-    });
+    // Register the test user
+    await request(app)
+        .post("/api/auth/register")
+        .send({
+            name: "Feed User",
+            username: "feeduser",
+            email: "feed@test.com",
+            password: "password123"
+        });
 
-    userId = user._id.toString();
+    // Login to get JWT token
+    const loginRes = await request(app)
+        .post("/api/auth/login")
+        .send({
+            email: "feed@test.com",
+            password: "password123"
+        });
 
-    // Create JWT token
-    token = jwt.sign({ id: userId }, process.env.JWT_SECRET || "testsecret", {
-        expiresIn: "1h"
-    });
+    token = loginRes.body.token;
+    userId = loginRes.body.user.id;
 });
 
 afterAll(async () => {
@@ -48,7 +52,7 @@ afterEach(async () => {
 describe("POST /feed", () => {
     it("should create a new post", async () => {
         const res = await request(app)
-            .post("/feed")
+            .post("/api/feed")
             .set("Authorization", `Bearer ${token}`)
             .send({ content: "Hello world!" });
 
@@ -59,7 +63,7 @@ describe("POST /feed", () => {
 
     it("should reject if no token is provided", async () => {
         const res = await request(app)
-            .post("/feed")
+            .post("/api/feed")
             .send({ content: "No token" });
 
         expect(res.statusCode).toBe(401);
@@ -77,7 +81,7 @@ describe("GET /feed", () => {
         ]);
 
         const res = await request(app)
-            .get("/feed")
+            .get("/api/feed")
             .set("Authorization", `Bearer ${token}`);
 
         expect(res.body.success).toBe(true);
@@ -94,7 +98,7 @@ describe("POST /feed/:id/like", () => {
         const post = await Post.create({ user: userId, content: "Like test" });
 
         const res = await request(app)
-            .post(`/feed/${post._id}/like`)
+            .post(`/api/feed/${post._id}/like`)
             .set("Authorization", `Bearer ${token}`);
 
         expect(res.body.success).toBe(true);
@@ -109,7 +113,7 @@ describe("POST /feed/:id/like", () => {
         });
 
         const res = await request(app)
-            .post(`/feed/${post._id}/like`)
+            .post(`/api/feed/${post._id}/like`)
             .set("Authorization", `Bearer ${token}`);
 
         expect(res.body.success).toBe(true);
@@ -119,7 +123,7 @@ describe("POST /feed/:id/like", () => {
     it("should return 404 if post does not exist", async () => {
         const fakeId = new mongoose.Types.ObjectId();
         const res = await request(app)
-            .post(`/feed/${fakeId}/like`)
+            .post(`/api/feed/${fakeId}/like`)
             .set("Authorization", `Bearer ${token}`);
 
         expect(res.statusCode).toBe(404);
@@ -132,7 +136,7 @@ describe("POST /feed/:id/like", () => {
 describe("POST /feed/share-trip", () => {
     it("should create an auto-generated trip post", async () => {
         const res = await request(app)
-            .post("/feed/share-trip")
+            .post("/api/feed/share-trip")
             .set("Authorization", `Bearer ${token}`)
             .send({
                 transportMode: "car",
@@ -147,7 +151,7 @@ describe("POST /feed/share-trip", () => {
 
     it("should return 500 on invalid input", async () => {
         const res = await request(app)
-            .post("/feed/share-trip")
+            .post("/api/feed/share-trip")
             .set("Authorization", `Bearer ${token}`)
             .send({
                 distance: "invalid"
