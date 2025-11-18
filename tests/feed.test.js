@@ -20,6 +20,7 @@ beforeAll(async () => {
     // Create test user
     const user = await User.create({
         name: "Test User",
+        username: "Test User",
         email: "test@example.com",
         password: "password123"
     });
